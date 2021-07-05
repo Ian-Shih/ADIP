@@ -9,7 +9,7 @@
 using namespace cv;
 using namespace std;
 void pow_law(Mat InMat, Mat OutMat, double c, double r) {
-	//power-law¦Ç«×®Õ¥¿
+	//power-lawç°åº¦æ ¡æ­£
 	int i, j;
 	double x;
 	for (i = 0; i < InMat.rows; i++) {
@@ -20,7 +20,7 @@ void pow_law(Mat InMat, Mat OutMat, double c, double r) {
 	}
 }
 void log_tf(Mat InMat, Mat OutMat, double c) {
-	//log¦Ç«×®Õ¥¿
+	//logç°åº¦æ ¡æ­£
 	int i, j;
 	for (i = 0; i < InMat.rows; i++) {
 		for (j = 0; j < InMat.cols; j++) {
@@ -29,7 +29,7 @@ void log_tf(Mat InMat, Mat OutMat, double c) {
 	}
 }
 void bitplane(Mat InMat, Mat OutMat[8]) {
-	//±N¹Ï¤À¦¨bitplane
+	//å°‡åœ–åˆ†æˆbitplane
 	int i, j, k;
 	int pow_bit;
 	for (i = 0; i < 8; i++) {	//bit plane
@@ -46,7 +46,7 @@ void bitplane(Mat InMat, Mat OutMat[8]) {
 	}
 }
 void mix(Mat InMat[8], Mat OutMat) {
-	//±Nbitplane²Õ¦¨¹Ï¤ù
+	//å°‡bitplaneçµ„æˆåœ–ç‰‡
 	int i, j, k;
 	int pow_bit;
 	for (i = 0; i < OutMat.rows; i++) {
@@ -109,7 +109,7 @@ void hw1() {
 	bitplane(lenaMat, test1);
 	bitplane(baboon, test2);
 	int change = 4;
-	//±NB¹Ïªº³¡¤ÀbitplaneÂÃ¨ìA¹Ï
+	//å°‡Båœ–çš„éƒ¨åˆ†bitplaneè—åˆ°Aåœ–
 	for (k = 0; k < change; k++) {
 		for (i = 0; i < lenaMat.rows; i++) {
 			for (j = 0; j < lenaMat.cols; j++) {
@@ -220,7 +220,7 @@ void hw2() {
 			test.data[i * test.cols + j] = 0;
 		}
 	}
-	//±N8±ibitplane­«·s²Õ¦X¦¨­ì¹Ï
+	//å°‡8å¼µbitplaneé‡æ–°çµ„åˆæˆåŸåœ–
 	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
 			pow_bit = pow(2, 7);
