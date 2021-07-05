@@ -14,7 +14,7 @@ void shuffle(int* ran) {
 	srand(seed);
 	for (i = 0; i < 16; i++) {
 		ran[i] = rand() % 16;
-		//¦pªG¦ì¸m½Ä¬ð´N¦A¬~µP¡Aª½¨ì¤£½Ä¬ð¬°¤î
+		//å¦‚æžœä½ç½®è¡çªå°±å†æ´—ç‰Œï¼Œç›´åˆ°ä¸è¡çªç‚ºæ­¢
 		for (int j = 0; j < i; j++) {
 			while (ran[j] == ran[i]) {
 				j = 0;
@@ -99,7 +99,7 @@ int hw1_2_B(Mat InMat, unsigned char* lenai) {
 	printf("1.2_b(1) The intensity at (123,234) is %3d \n", InMat.at<uchar>(123, 234));
 	printf("1.2_b(2) The 5487th pixel's intensity  is %3d \n", InMat.at<uchar>(5487));
 	printf("1.2_b(2) The 5487th pixel is at (%3d,%3d) \n", (5487 / height), (5487 % height));
-	printf("1.2_b(2) Check the intensity at(21,111)¡G%3d \n", InMat.at<uchar>(5487 / height, 5487 % height));
+	printf("1.2_b(2) Check the intensity at(21,111)ï¼š%3d \n", InMat.at<uchar>(5487 / height, 5487 % height));
 	return 0;
 }
 int hw1_2_C(Mat InMat, unsigned char* lenai) {
