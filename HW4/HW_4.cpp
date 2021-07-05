@@ -14,7 +14,7 @@ int avg10[540][960];
 int avg200[540][960];
 int masksize = 3;
 void gaussian(double sig,double Outmask[5][5]) {
-	//¥Í¦¨°ª´µÂoªi¾¹
+	//ç”Ÿæˆé«˜æ–¯æ¿¾æ³¢å™¨
 	int i, j;
 	double pi = 3.14,sum=0;
 	for (i = -2; i <= 2; i++) {
@@ -36,7 +36,7 @@ void gaussian(double sig,double Outmask[5][5]) {
 	printf("\n");
 }
 void padding_zero(Mat InMat, Mat OutMat, int mask[3][3]) {
-	//0¶ñ¥R
+	//0å¡«å……
 	int i, j, p, q, border_x, border_y;
 	double sum = 0;
 	masksize = 3;
@@ -47,7 +47,7 @@ void padding_zero(Mat InMat, Mat OutMat, int mask[3][3]) {
 				for (q = j - masksize / 2; q <= (j + masksize / 2); q++) {
 					border_x = p;
 					border_y = q;
-					//¶W¥XÃä¬É¤£­pºâ
+					//è¶…å‡ºé‚Šç•Œä¸è¨ˆç®—
 					if (p < 0 || p>(InMat.rows - 1) || q < 0 || q>(InMat.cols - 1)) {
 						sum += 0;
 					}
@@ -70,7 +70,7 @@ void padding_zero(Mat InMat, Mat OutMat, int mask[3][3]) {
 	}
 }
 void padding_rep(Mat InMat, Mat OutMat, int mask[3][3]) {
-	//½Æ»s¶ñ¥R
+	//è¤‡è£½å¡«å……
 	int i, j,p,q, border_x, border_y;
 	double sum = 0;
 	masksize = 3;
@@ -81,7 +81,7 @@ void padding_rep(Mat InMat, Mat OutMat, int mask[3][3]) {
 				for (q = j - masksize / 2; q <= (j + masksize / 2); q++) {
 					border_x = p;
 					border_y = q;
-					//¶W¥XÃä¬É«h·í§@Ãä¬É
+					//è¶…å‡ºé‚Šç•Œå‰‡ç•¶ä½œé‚Šç•Œ
 					if (p < 0 || p>(InMat.rows-1) || q < 0 || q>(InMat.cols-1)) {
 						if (p < 0) {
 							border_x = 0;
@@ -113,7 +113,7 @@ void padding_rep(Mat InMat, Mat OutMat, int mask[3][3]) {
 	}
 }
 void padding_mir(Mat InMat, Mat OutMat, double mask[5][5]) {
-	//Ãè¹³¶ñ¥R
+	//é¡åƒå¡«å……
 	int i, j, p, q, border_x, border_y;
 	double sum = 0;
 	masksize = 5;
@@ -124,7 +124,7 @@ void padding_mir(Mat InMat, Mat OutMat, double mask[5][5]) {
 				for (q = j - masksize / 2; q <= (j + masksize / 2); q++) {
 					border_x = p;
 					border_y = q;
-					//¶W¥XÃä¬É«h¥HÃä¬É¬°¶bÃè®g
+					//è¶…å‡ºé‚Šç•Œå‰‡ä»¥é‚Šç•Œç‚ºè»¸é¡å°„
 					if (p < 0 || p>(InMat.rows - 1) || q < 0 || q>(InMat.cols - 1)) {
 						if (p < 0) {
 							border_x = p *(-1);
@@ -156,7 +156,7 @@ void padding_mir(Mat InMat, Mat OutMat, double mask[5][5]) {
 	}
 }
 void pdf(Mat InMat,double* cnt) {
-	//­pºâpdf
+	//è¨ˆç®—pdf
 	int i, j;
 	for (i = 0; i < 256; i++) {
 		cnt[i] = 0;
@@ -171,14 +171,14 @@ void pdf(Mat InMat,double* cnt) {
 	}
 }
 void cdf(double* cnt) {
-	//±NpdfÂà¦¨cdf
+	//å°‡pdfè½‰æˆcdf
 	int i;
 	for (i = 1; i < 256; i++) {
 		cnt[i] += cnt[i - 1];
 	}
 }
 void histogram(double *cnt,Mat OutMat) {
-	//µeª½¤è¹Ï
+	//ç•«ç›´æ–¹åœ–
 	int i, j;
 	for (i = 0; i < 256; i++) {
 		for (j = 0; j < 256; j++) {
@@ -193,7 +193,7 @@ void histogram(double *cnt,Mat OutMat) {
 void local_enhance(Mat InMat, Mat OutMat,int mask) {
 	double cnt_mask[256];
 	int i, j, s, p, q;
-	//¥H°Ï°ìª½¤è¹Ï¨Ó¶i¦æµ¥¤Æ
+	//ä»¥å€åŸŸç›´æ–¹åœ–ä¾†é€²è¡Œç­‰åŒ–
 	for (i = mask / 2; i < InMat.rows - mask / 2; i++) {
 		for (j = mask / 2; j < InMat.cols - mask / 2; j++) {
 			for (s = 0; s < 256; s++) {
@@ -243,7 +243,7 @@ void hw1_1() {
 	Mat househist(256, 256, CV_8UC1);
 	Mat lenahist(256, 256, CV_8UC1);
 	double cnt_house[256], cnt_lena[256];
-	//¨úª½¤è¹Ï
+	//å–ç›´æ–¹åœ–
 	pdf(houseMat, cnt_house);
 	histogram(cnt_house, househist);
 	imshow("househist", househist);
@@ -256,7 +256,7 @@ void hw1_1() {
 	cdf(cnt_lena);
 	histogram(cnt_lena, lenahist);
 	imshow("lenacdf", lenahist);
-	//ª½¤è¹Ï¤Ç°t
+	//ç›´æ–¹åœ–åŒ¹é…
 	float diff_cdf[256][256];
     for (i = 0; i < 256; i++) {
 		for (j = 0; j < 256; j++) {
@@ -340,7 +340,7 @@ void hw1_2() {
 	destroyAllWindows();
 }
 void hw2() {
-	//¥­§¡­I´º«Ø¼Ò
+	//å¹³å‡èƒŒæ™¯å»ºæ¨¡
 	VideoCapture cap("Inpic/street.avi");
 	if (!cap.isOpened()) {
 		puts("Loading File Error!");
@@ -371,13 +371,13 @@ void hw2() {
 		cvtColor(frame,frame,COLOR_BGR2GRAY);
 		for (i = 0; i < frame.rows; i++) {
 			for (j = 0; j < frame.cols; j++) {
-				//¨ú¨C1±i
+				//å–æ¯1å¼µ
 				avg[i][j] += frame.at<uchar>(i, j);
-				//¨ú«e200±i
+				//å–å‰200å¼µ
 				if (cnt <= 200) {
 					avg200[i][j] += frame.at<uchar>(i, j);
 				}
-				//¨C40±i¨ú1±i¡A¦@¨ú10±i
+				//æ¯40å¼µå–1å¼µï¼Œå…±å–10å¼µ
 				if ((cnt%40==0)&&(cnt/40<=10)) {
 					avg10[i][j] += frame.at<uchar>(i, j);
 				}
@@ -386,7 +386,7 @@ void hw2() {
 	}
 	for (i = 0; i < sum.rows; i++) {
 		for (j = 0; j < sum.cols; j++) {
-			//¦Ç¶¥¥­§¡
+			//ç°éšå¹³å‡
 			avg[i][j] /= cnt;
 			sum.at<uchar>(i, j)= avg[i][j];
 			avg200[i][j] /= 200;
@@ -421,12 +421,12 @@ void hw3() {
 	unsigned char* bridge = new unsigned char[size];
 	fread(bridge, 1, size, bridgeFile);
 	Mat bridgeMat(height, width, CV_8UC1, bridge);
-	//Ãä½tÂoªi
+	//é‚Šç·£æ¿¾æ³¢
 	int mask1[3][3] = { {0,-1,0},{-1,4,-1},{0,-1,0}};
 	int mask2[3][3] = {{-1,-1,-1},{-1,8,-1},{-1,-1,-1}};
 	Mat pad1(height, width, CV_8UC1);
 	Mat pad2(height, width, CV_8UC1);
-	//±Æ°£Ãä¬É°İÃD
+	//æ’é™¤é‚Šç•Œå•é¡Œ
 	padding_zero(bridgeMat, pad1, mask1);
 	imshow("4_padding_zero", pad1);
 	imwrite("4_padding_zero.png", pad1);
@@ -480,7 +480,7 @@ void hw4() {
 	Mat pad_g2(height, width, CV_8UC1);
 	Mat pad_g3(height, width, CV_8UC1);
 	double test[5][5];
-	//°ª´µÂoªi
+	//é«˜æ–¯æ¿¾æ³¢
 	gaussian(0.8,test);
 	padding_mir(turtleMat, pad_g1, test);
 	imshow("gause0.8", pad_g1);
@@ -498,7 +498,7 @@ void hw4() {
 	gaussian(1.5, test);
 	padding_mir(turtleMat, pad_g2, test);
 	double diff = 0;
-	//°ª´µ®t­È
+	//é«˜æ–¯å·®å€¼
 	for (i = 0; i < pad_g1.rows; i++) {
 		for (j = 0; j < pad_g1.cols; j++) {
 			diff= pad_g1.data[i * pad_g1.cols + j] - pad_g2.data[i * pad_g2.cols + j];
