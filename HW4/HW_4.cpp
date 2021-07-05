@@ -282,13 +282,13 @@ void hw1_1() {
 		}
 	}
 	imshow("match", fix);
-	imwrite("match.png", fix);
+	imwrite("Outpic/match.png", fix);
 	double cnt_fix[256];
 	pdf(fix, cnt_fix);
 	Mat fixhist(256, 256, CV_8UC1);
 	histogram(cnt_fix, fixhist);
 	imshow("match_hist", fixhist);
-	imwrite("match_hist.png", fixhist);
+	imwrite("Outpic/match_hist.png", fixhist);
 	cdf(cnt_fix);
 	histogram(cnt_fix, fixhist);
 	imshow("match_cdf", fixhist);	
@@ -315,27 +315,27 @@ void hw1_2() {
 	Mat mask_hist(256, 256, CV_8UC1);
 	local_enhance(houseMat, fix1, 3);
 	imshow("3*3", fix1);
-	imwrite("mask3_3.png", fix1);
+	imwrite("Outpic/mask3_3.png", fix1);
 	pdf(fix1, cnt_house);
 	histogram(cnt_house, mask_hist);
 	imshow("hist3_3", mask_hist);
-	imwrite("hist3_3.png", mask_hist);
+	imwrite("Outpic/hist3_3.png", mask_hist);
 	Mat fix2(height, width, CV_8UC1);
 	local_enhance(houseMat, fix2, 5);
 	imshow("5*5", fix2);
-	imwrite("mask5_5.png", fix2);
+	imwrite("Outpic/mask5_5.png", fix2);
 	pdf(fix2, cnt_house);
 	histogram(cnt_house, mask_hist);
 	imshow("hist5_5", mask_hist);
-	imwrite("hist5_5.png", mask_hist);
+	imwrite("Outpic/hist5_5.png", mask_hist);
 	Mat fix3(height, width, CV_8UC1);
 	local_enhance(houseMat, fix3, 9);
 	imshow("9*9", fix3);
-	imwrite("mask9_9.png", fix3);
+	imwrite("Outpic/mask9_9.png", fix3);
 	pdf(fix3, cnt_house);
 	histogram(cnt_house, mask_hist);
 	imshow("hist9_9", mask_hist);
-	imwrite("hist9_9.png", mask_hist);
+	imwrite("Outpic/hist9_9.png", mask_hist);
 	waitKey(0);
 	destroyAllWindows();
 }
@@ -398,9 +398,9 @@ void hw2() {
 	imshow("all", sum);
 	imshow("200", sum200);
 	imshow("10", sum10);
-	imwrite("framesall.png", sum);
-	imwrite("frames200.png", sum200);
-	imwrite("frames10.png", sum10);
+	imwrite("Outpic/framesall.png", sum);
+	imwrite("Outpic/frames200.png", sum200);
+	imwrite("Outpic/frames10.png", sum10);
 	waitKey(0);
 	cap.release();
 	destroyAllWindows();
@@ -429,33 +429,33 @@ void hw3() {
 	//排除邊界問題
 	padding_zero(bridgeMat, pad1, mask1);
 	imshow("4_padding_zero", pad1);
-	imwrite("4_padding_zero.png", pad1);
+	imwrite("Outpic/4_padding_zero.png", pad1);
 	padding_zero(bridgeMat, pad2, mask2);
 	imshow("8_padding_zero", pad2);
-	imwrite("8_padding_zero.png", pad2);
+	imwrite("Outpic/8_padding_zero.png", pad2);
 	padding_rep(bridgeMat, pad1, mask1);
 	imshow("4_padding_rep", pad1);
-	imwrite("4_padding_rep.png", pad1);
+	imwrite("Outpic/4_padding_rep.png", pad1);
 	padding_rep(bridgeMat, pad2, mask2);
 	imshow("8_padding_rep", pad2);
-	imwrite("8_padding_rep.png", pad2);
+	imwrite("Outpic/8_padding_rep.png", pad2);
 	Mat pad3(height, width, CV_8UC1);
 	//high-boost
 	int A = 1;
 	int mask3[3][3] = { {0,-1,0},{-1,A+4,-1},{0,-1,0} };
 	padding_rep(bridgeMat, pad3, mask3);
 	imshow("hb1_padding_rep", pad3);
-	imwrite("hb1_padding_rep.png", pad3);
+	imwrite("Outpic/hb1_padding_rep.png", pad3);
 	A = 2;
 	mask3[1][1] = A+4;
 	padding_rep(bridgeMat, pad3, mask3);
 	imshow("hb2_padding_rep", pad3);
-	imwrite("hb2_padding_rep.png", pad3);
+	imwrite("Outpic/hb2_padding_rep.png", pad3);
 	A = 4;
 	mask3[1][1] = A+4;
 	padding_rep(bridgeMat, pad3, mask3);
 	imshow("hb4_padding_rep", pad3);
-	imwrite("hb4_padding_rep.png", pad3);
+	imwrite("Outpic/hb4_padding_rep.png", pad3);
 	waitKey(0);
 	destroyAllWindows();
 }
@@ -484,15 +484,15 @@ void hw4() {
 	gaussian(0.8,test);
 	padding_mir(turtleMat, pad_g1, test);
 	imshow("gause0.8", pad_g1);
-	imwrite("gause08.png", pad_g1);
+	imwrite("Outpic/gause08.png", pad_g1);
 	gaussian(1.3, test);
 	padding_mir(turtleMat, pad_g1, test);
 	imshow("gause1.3", pad_g1);
-	imwrite("gause13.png", pad_g1);
+	imwrite("Outpic/gause13.png", pad_g1);
 	gaussian(2, test);
 	padding_mir(turtleMat, pad_g1, test);
 	imshow("gause2.0", pad_g1);
-	imwrite("gause2.png", pad_g1);
+	imwrite("Outpic/gause2.png", pad_g1);
 	gaussian(0.5, test);
 	padding_mir(turtleMat, pad_g1, test);
 	gaussian(1.5, test);
@@ -514,7 +514,7 @@ void hw4() {
 		}
 	}
 	imshow("DoG", pad_g3);
-	imwrite("DoG.png", pad_g3);
+	imwrite("Outpic/DoG.png", pad_g3);
 	for (i = 0; i < pad_g1.rows; i++) {
 		for (j = 0; j < pad_g1.cols; j++) {
 			if (pad_g3.data[i * pad_g3.cols + j]) {
@@ -523,7 +523,7 @@ void hw4() {
 		}
 	}
 	imshow("DoG_bright", pad_g3);
-	imwrite("DoG_bright.png", pad_g3);
+	imwrite("Outpic/DoG_bright.png", pad_g3);
 	waitKey(0);
 	destroyAllWindows();
 }
