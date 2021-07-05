@@ -16,19 +16,19 @@ double im_squa[256][256] = { 0 }, re_squa[256][256] = { 0 };
 double im_diam[256][256] = { 0 }, re_diam[256][256] = { 0 };
 int cv_rect[256][256] = { 0 };
 void FourierTF(Mat InMat, double im_uv[][256], double re_uv[][256]) {
-	//³Å¥ß¸­Âà´«(±N2ºûÂà´«Âà¦¨2¦¸1ºûÂà´«´î¤Ö­pºâ®É¶¡)
+	//å‚…ç«‹è‘‰è½‰æ›(å°‡2ç¶­è½‰æ›è½‰æˆ2æ¬¡1ç¶­è½‰æ›æ¸›å°‘è¨ˆç®—æ™‚é–“)
 	int i, j, u, v;
 	double maxv = 0, minv = 999;
 	vector<vector<double>>	input(InMat.rows, vector<double>(InMat.cols)),
 							im_xv(InMat.rows, vector<double>(InMat.cols)),
 							re_xv(InMat.rows, vector<double>(InMat.cols));
-	//±NÀW°ì¹Ï²¾¦Ü¤¤¤ß
+	//å°‡é »åŸŸåœ–ç§»è‡³ä¸­å¿ƒ
 	for (i = 0; i < InMat.rows; i++) {
 		for (j = 0; j < InMat.cols; j++) {
 			input[i][j] = InMat.at<uchar>(i, j) * pow(-1, i + j);
 		}
 	}
-	//²Ä¤@¦¸¤@ºûÂà´«(±Nf(x,y)Âà¬°F(x,v))
+	//ç¬¬ä¸€æ¬¡ä¸€ç¶­è½‰æ›(å°‡f(x,y)è½‰ç‚ºF(x,v))
 	for (i = 0; i < InMat.rows; i++) {
 		for (v = 0; v < InMat.cols; v++) {
 			re_xv[i][v] = 0;
@@ -39,7 +39,7 @@ void FourierTF(Mat InMat, double im_uv[][256], double re_uv[][256]) {
 			}
 		}
 	}
-	//²Ä¤G¦¸¤@ºûÂà´«(±NF(x,v)Âà¬°F(u,v))
+	//ç¬¬äºŒæ¬¡ä¸€ç¶­è½‰æ›(å°‡F(x,v)è½‰ç‚ºF(u,v))
 	for (u = 0; u < InMat.rows; u++) {
 		for (v = 0; v < InMat.cols; v++) {
 			re_uv[u][v] = 0;
@@ -54,11 +54,11 @@ void FourierTF(Mat InMat, double im_uv[][256], double re_uv[][256]) {
 	}
 }
 void mag(double im_uv[][256], double re_uv[][256], Mat OutMat) {
-	//­pºâÀW°ì±j«×¹Ï
+	//è¨ˆç®—é »åŸŸå¼·åº¦åœ–
 	int u, v;
 	double maxv = 0, minv = 999;
 	Mat tmp(OutMat.rows, OutMat.cols, CV_32F);
-	//Âk¤@¤Æ
+	//æ­¸ä¸€åŒ–
 	for (u = 0; u < OutMat.rows; u++) {
 		for (v = 0; v < OutMat.cols; v++) {
 			tmp.at<float>(u, v) = sqrt(pow(re_uv[u][v], 2) + pow(im_uv[u][v], 2));
@@ -68,7 +68,7 @@ void mag(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 		}
 	}
 	tmp /= maxv;
-	//Gamma®Õ¥¿
+	//Gammaæ ¡æ­£
 	for (u = 0; u < OutMat.rows; u++) {
 		for (v = 0; v < OutMat.cols; v++) {
 			tmp.at<float>(u, v) = pow(tmp.at<float>(u, v), 0.4);
@@ -82,14 +82,14 @@ void mag(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 	}
 }
 void IFT(double im_uv[][256], double re_uv[][256], Mat OutMat) {
-	//³Å¥ß¸­°fÂà´«(±N2ºû°fÂà´«Âà¦¨2¦¸1ºû°fÂà´«´î¤Ö­pºâ®É¶¡)
+	//å‚…ç«‹è‘‰é€†è½‰æ›(å°‡2ç¶­é€†è½‰æ›è½‰æˆ2æ¬¡1ç¶­é€†è½‰æ›æ¸›å°‘è¨ˆç®—æ™‚é–“)
 	int i = 0, j = 0, u = 0, v = 0;
 	vector<vector<double>>	input(OutMat.rows, vector<double>(OutMat.cols)),
 		im_uy(OutMat.rows, vector<double>(OutMat.cols)),
 		re_uy(OutMat.rows, vector<double>(OutMat.cols)),
 		im_xy(OutMat.rows, vector<double>(OutMat.cols)),
 		re_xy(OutMat.rows, vector<double>(OutMat.cols));
-	//²Ä¤@¦¸¤@ºû°fÂà´«(±NF(u,v)Âà¬°F(u,y))
+	//ç¬¬ä¸€æ¬¡ä¸€ç¶­é€†è½‰æ›(å°‡F(u,v)è½‰ç‚ºF(u,y))
 	for (u = 0; u < OutMat.rows; u++) {
 		for (j = 0; j < OutMat.cols; j++) {
 			re_uy[u][j] = 0;
@@ -102,7 +102,7 @@ void IFT(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 			}
 		}
 	}
-	//²Ä¤G¦¸¤@ºû°fÂà´«(±NF(u,y)Âà¬°f(x,y))
+	//ç¬¬äºŒæ¬¡ä¸€ç¶­é€†è½‰æ›(å°‡F(u,y)è½‰ç‚ºf(x,y))
 	for (i = 0; i < OutMat.rows; i++) {
 		for (j = 0; j < OutMat.cols; j++) {
 			re_xy[i][j] = 0;
@@ -115,7 +115,7 @@ void IFT(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 			}
 		}
 	}
-	//­pºâ®É°ì±j«×¹Ï(¦]¬°Âà´«®É­¼¹Lpow(-1, i + j)¡A»İ­n¦A­¼¤@¦¸)
+	//è¨ˆç®—æ™‚åŸŸå¼·åº¦åœ–(å› ç‚ºè½‰æ›æ™‚ä¹˜épow(-1, i + j)ï¼Œéœ€è¦å†ä¹˜ä¸€æ¬¡)
 	for (i = 0; i < OutMat.rows; i++) {
 		for (j = 0; j < OutMat.cols; j++) {
 			OutMat.at<uchar>(i, j) = sqrt(pow(re_xy[i][j] * pow(-1, i + j), 2) + pow(im_xy[i][j] * pow(-1, i + j), 2));
@@ -123,7 +123,7 @@ void IFT(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 	}
 }
 void mse_and_psnr(Mat oriMat, Mat InMat) {
-	//µû¦ô»~®t¡A¥Îmse»Ppsnrªí¥Ü
+	//è©•ä¼°èª¤å·®ï¼Œç”¨mseèˆ‡psnrè¡¨ç¤º
 	double mse = 0;
 	double psnr = 0;
 	int i, j;
@@ -138,28 +138,28 @@ void mse_and_psnr(Mat oriMat, Mat InMat) {
 	printf("vs. org psnr: %f\n", psnr);
 }
 Mat opencv_dft(Mat InMat) {
-	//opencvªº³Å¥ß¸­Âà´«
+	//opencvçš„å‚…ç«‹è‘‰è½‰æ›
 	Mat to64F, OutMat;
 	InMat.convertTo(to64F, CV_64F);
 	dft(to64F, OutMat, DFT_COMPLEX_OUTPUT);
 	return OutMat;
 }
 Mat opencv_mag(Mat InMat) {
-	//¥Îopencv­pºâÀW°ì±j«×¹Ï
+	//ç”¨opencvè¨ˆç®—é »åŸŸå¼·åº¦åœ–
 	Mat tmp, OutMat;
 	vector<Mat> split2chs;
 	split(InMat, split2chs);
-	magnitude(split2chs[0], split2chs[1], OutMat);//²£¥ÍÀW°ì±j«×¹Ï
+	magnitude(split2chs[0], split2chs[1], OutMat);//ç”¢ç”Ÿé »åŸŸå¼·åº¦åœ–
 	Mat up_left, up_right, low_left, low_right;
 	int u, v;
 	int cx = 256 / 2;
 	int cy = 256 / 2;
-	//±N¹Ï¤Á¦¨¥ª¤W¡B¥k¤W¡B¥ª¤U¡B¥k¤U
+	//å°‡åœ–åˆ‡æˆå·¦ä¸Šã€å³ä¸Šã€å·¦ä¸‹ã€å³ä¸‹
 	up_left = Mat(OutMat, Rect(0, 0, cx, cy));
 	up_right = Mat(OutMat, Rect(cx, 0, cx, cy));
 	low_left = Mat(OutMat, Rect(0, cy, cx, cy));
 	low_right = Mat(OutMat, Rect(cx, cy, cx, cy));
-	//¥Ñ©óª½±µ¶i¦æ³Å¥ß¸­Âà´«·|¨Ï¤¤¤ß¶]¦Ü¨¤¸¨¡A¦]¦¹±N¥|¶ô¤p¹Ï¹ï¨¤¥æ´«¡A±N¹Ï²¾¦Ü¤¤¤ß
+	//ç”±æ–¼ç›´æ¥é€²è¡Œå‚…ç«‹è‘‰è½‰æ›æœƒä½¿ä¸­å¿ƒè·‘è‡³è§’è½ï¼Œå› æ­¤å°‡å››å¡Šå°åœ–å°è§’äº¤æ›ï¼Œå°‡åœ–ç§»è‡³ä¸­å¿ƒ
 	up_left.copyTo(tmp);
 	low_right.copyTo(up_left);
 	tmp.copyTo(low_right);
@@ -171,7 +171,7 @@ Mat opencv_mag(Mat InMat) {
 	return OutMat;
 }
 Mat opencv_idft(Mat InMat) {
-	//opencvªº³Å¥ß¸­°fÂà´«
+	//opencvçš„å‚…ç«‹è‘‰é€†è½‰æ›
 	Mat to64F, OutMat;
 	idft(InMat, to64F, DFT_REAL_OUTPUT + DFT_INVERSE + DFT_SCALE);
 	to64F.convertTo(OutMat, CV_8UC1);
@@ -233,14 +233,14 @@ void hw2_a_and_c() {
 	Mat diamondMat(height, width, CV_8UC1, diamond);
 	Mat diam_ft(height, width, CV_8UC1);
 
-	//¶i¦æ³Å¥ß¸­Âà´«
+	//é€²è¡Œå‚…ç«‹è‘‰è½‰æ›
 	imshow("rectMat", rectMat);
 	FourierTF(rectMat, im_rect, re_rect);
 	mag(im_rect, re_rect, rect_ft);
 	imshow("rectFT", rect_ft);
 	imwrite("Outpic/rectFT.png", rect_ft);
 
-	//¶i¦æ³Å¥ß¸­°fÂà´«
+	//é€²è¡Œå‚…ç«‹è‘‰é€†è½‰æ›
 	Mat rect_ift(height, width, CV_8UC1);
 	IFT(im_rect, re_rect, rect_ift);
 	imshow("rectIFT", rect_ift);
@@ -248,14 +248,14 @@ void hw2_a_and_c() {
 	printf("\nrect vs. org mse &psnr\n");
 	mse_and_psnr(rectMat, rect_ift);
 
-	//¶i¦æ³Å¥ß¸­Âà´«
+	//é€²è¡Œå‚…ç«‹è‘‰è½‰æ›
 	imshow("circleMat", circleMat);
 	FourierTF(circleMat, im_circ, re_circ);
 	mag(im_circ, re_circ, circ_ft);
 	imshow("circleFT", circ_ft);
 	imwrite("Outpic/circleFT.png", circ_ft);
 
-	//¶i¦æ³Å¥ß¸­°fÂà´«
+	//é€²è¡Œå‚…ç«‹è‘‰é€†è½‰æ›
 	Mat circ_ift(height, width, CV_8UC1);
 	IFT(im_circ, re_circ, circ_ift);
 	imshow("circIFT", circ_ift);
@@ -263,14 +263,14 @@ void hw2_a_and_c() {
 	printf("\ncircle vs. org mse &psnr\n");
 	mse_and_psnr(circleMat, circ_ift);
 
-	//¶i¦æ³Å¥ß¸­Âà´«
+	//é€²è¡Œå‚…ç«‹è‘‰è½‰æ›
 	imshow("squareMat", squareMat);
 	FourierTF(squareMat, im_squa, re_squa);
 	mag(im_squa, re_squa, squa_ft);
 	imshow("squareFT", squa_ft);
 	imwrite("Outpic/squareFT.png", squa_ft);
 
-	//¶i¦æ³Å¥ß¸­°fÂà´«
+	//é€²è¡Œå‚…ç«‹è‘‰é€†è½‰æ›
 	Mat squa_ift(height, width, CV_8UC1);
 	IFT(im_squa, re_squa, squa_ift);
 	imshow("squaIFT", squa_ift);
@@ -278,7 +278,7 @@ void hw2_a_and_c() {
 	printf("\nsquare vs. org mse &psnr\n");
 	mse_and_psnr(squareMat, squa_ift);
 
-	//¶i¦æ³Å¥ß¸­Âà´«
+	//é€²è¡Œå‚…ç«‹è‘‰è½‰æ›
 	imshow("diamondMat", diamondMat);
 	FourierTF(diamondMat, im_diam, re_diam);
 	mag(im_diam, re_diam, diam_ft);
@@ -286,7 +286,7 @@ void hw2_a_and_c() {
 	imwrite("Outpic/diamondFT.png", diam_ft);
 	Mat diam_ift(height, width, CV_8UC1);
 
-	//¶i¦æ³Å¥ß¸­°fÂà´«
+	//é€²è¡Œå‚…ç«‹è‘‰é€†è½‰æ›
 	IFT(im_diam, re_diam, diam_ift);
 	imshow("diamIFT", diam_ift);
 	imwrite("Outpic/diamIFT.png", diam_ift);
@@ -297,7 +297,7 @@ void hw2_a_and_c() {
 	destroyAllWindows();
 }
 void hw2_b() {
-	//¨Ï¥Îopencv¶i¦æ³Å¥ß¸­Âà´«¤Î°fÂà´«
+	//ä½¿ç”¨opencvé€²è¡Œå‚…ç«‹è‘‰è½‰æ›åŠé€†è½‰æ›
 	int width = 256;
 	int height = 256;
 
@@ -351,12 +351,12 @@ void hw2_b() {
 	Mat diamondMat(height, width, CV_8UC1, diamond);
 	Mat diam_ft(height, width, CV_8UC1);
 	Mat rect_cpx, circ_cpx, squa_cpx, diam_cpx;
-	//³Å¥ß¸­Âà´«by OpenCV
+	//å‚…ç«‹è‘‰è½‰æ›by OpenCV
 	rect_cpx  = opencv_dft(rectMat);
 	circ_cpx = opencv_dft(circleMat);
 	squa_cpx = opencv_dft(squareMat);
 	diam_cpx = opencv_dft(diamondMat);
-	//²£¥ÍÀW°ì±j«×¹Ï
+	//ç”¢ç”Ÿé »åŸŸå¼·åº¦åœ–
 	rect_ft  = opencv_mag(rect_cpx);
 	circ_ft = opencv_mag(circ_cpx);
 	squa_ft = opencv_mag(squa_cpx);
@@ -372,7 +372,7 @@ void hw2_b() {
 	imwrite("Outpic/square_dft_by_cv.png", squa_ft);
 	imwrite("Outpic/diamond_dft_by_cv.png", diam_ft);
 
-	//³Å¥ß¸­°fÂà´«by OpenCV
+	//å‚…ç«‹è‘‰é€†è½‰æ›by OpenCV
 	Mat cv1, cv2, cv3, cv4;
 	cv1 = opencv_idft(rect_cpx);
 	cv2 = opencv_idft(circ_cpx);
