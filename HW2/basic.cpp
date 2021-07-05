@@ -16,12 +16,12 @@ int qu_times = 0;
 int map_times = 0;
 std::ostringstream name;
 void D4map_path(Mat InMat, int x, int y, int step, int p1, int p2 = 80, int p3 = 80) {
-	//x,y:¦ì¸m
-	//step:¨B¼Æ
-	//p1,p2,p3:¥i¨«ªº¦Ç¶¥­È
+	//x,y:ä½ç½®
+	//step:æ­¥æ•¸
+	//p1,p2,p3:å¯èµ°çš„ç°éšå€¼
 	mazecnt[0][0] = 1;
 	int i, j;
-	//¨«¨ì²×ÂI
+	//èµ°åˆ°çµ‚é»
 	if (x == 19 && y == 19 || step > minstep) {
 		if (step < minstep) {
 			minstep = step;
@@ -56,12 +56,12 @@ void D4map_path(Mat InMat, int x, int y, int step, int p1, int p2 = 80, int p3 =
 	}
 }
 void D8map_path(Mat InMat, int x, int y, int step, int p1, int p2 = 80, int p3 = 80) {
-	//x,y:¦ì¸m
-	//step:¨B¼Æ
-	//p1,p2,p3:¥i¨«ªº¦Ç¶¥­È
+	//x,y:ä½ç½®
+	//step:æ­¥æ•¸
+	//p1,p2,p3:å¯èµ°çš„ç°éšå€¼
 	mazecnt[0][0] = 1;
 	int i, j;
-	//¨«¨ì²×ÂI
+	//èµ°åˆ°çµ‚é»
 	if (x == 19 && y == 19 || step > minstep) {
 		if (step < minstep) {
 			minstep = step;
@@ -116,12 +116,12 @@ void D8map_path(Mat InMat, int x, int y, int step, int p1, int p2 = 80, int p3 =
 	}
 }
 void DMmap_path(Mat InMat, int x, int y, int step, int p1, int p2 = 80, int p3 = 80) {
-	//x,y:¦ì¸m
-	//step:¨B¼Æ
-	//p1,p2,p3:¥i¨«ªº¦Ç¶¥­È
+	//x,y:ä½ç½®
+	//step:æ­¥æ•¸
+	//p1,p2,p3:å¯èµ°çš„ç°éšå€¼
 	mazecnt[0][0] = 1;
 	int i, j;
-	//¨«¨ì²×ÂI
+	//èµ°åˆ°çµ‚é»
 	if (x == 19 && y == 19 || step > minstep) {
 		if (step < minstep) {
 			minstep = step;
@@ -133,7 +133,7 @@ void DMmap_path(Mat InMat, int x, int y, int step, int p1, int p2 = 80, int p3 =
 		}
 	}
 	else {
-		//¶·§PÂ_¨äx,y¤À¶q¬ÒµLªk¨«¤~¯à¨«±×Ãä
+		//é ˆåˆ¤æ–·å…¶x,yåˆ†é‡çš†ç„¡æ³•èµ°æ‰èƒ½èµ°æ–œé‚Š
 		if (!(y + 1 < 20 && !mazecnt[x][y + 1] && (InMat.at<uchar>(x, y + 1) == p1 || InMat.at<uchar>(x, y + 1) == p2 || InMat.at<uchar>(x, y + 1) == p3)) &&
 			!(x + 1 < 20 && !mazecnt[x + 1][y] && (InMat.at<uchar>(x + 1, y) == p1 || InMat.at<uchar>(x + 1, y) == p2 || InMat.at<uchar>(x + 1, y) == p3))) {
 			if (x + 1 < 20 && y + 1 < 20 && !mazecnt[x + 1][y + 1] && (InMat.at<uchar>(x + 1, y + 1) == p1 || InMat.at<uchar>(x + 1, y + 1) == p2 || InMat.at<uchar>(x + 1, y + 1) == p3)) {
@@ -190,7 +190,7 @@ void DMmap_path(Mat InMat, int x, int y, int step, int p1, int p2 = 80, int p3 =
 	}
 }
 float W(float x)
-{	//Bicubic¨ç¼Æ
+{	//Bicubicå‡½æ•¸
 	float a = -0.5;
 	if (x < 0) {
 		x *= (-1);
@@ -218,16 +218,16 @@ int quantize(Mat InMat, Mat* OutMat) {
 	}
 	for (k = 0; k < 8; k++) {
 		mse[k] = 0;
-		t1 = pow(2, 8 - k - 1);	//»Ö­È
+		t1 = pow(2, 8 - k - 1);	//é–¥å€¼
 		t2 = pow(2, 8) - 1;	//255
-		t3 = pow(2, k + 1) - 1;	//Á`¦@´XÃş(±q0¶}©l©Ò¥H-1)
+		t3 = pow(2, k + 1) - 1;	//ç¸½å…±å¹¾é¡(å¾0é–‹å§‹æ‰€ä»¥-1)
 		for (i = 0; i < InMat.rows; i++) {
 			for (j = 0; j < InMat.cols; j++) {
 				OutMat[k].data[i * InMat.cols + j] = InMat.data[i * InMat.cols + j] / t1 * t2 / t3;
 				mse[k] += pow((OutMat[k].data[i * InMat.cols + j] - InMat.data[i * InMat.cols + j]), 2);
 			}
 		}
-		//­pºâmse&psnr
+		//è¨ˆç®—mse&psnr
 		mse[k] /= (double)size;
 		psnr[k] = 10 * log10(pow(255, 2) / mse[k]);
 		printf("\n%d-bit mse: %f\n", k + 1, mse[k]);
@@ -250,7 +250,7 @@ Mat bilinear(Mat InMat, double Mag) {
 			tmp.data[(int)(i * Mag) * tmp.cols + (int)(j * Mag)] = InMat.data[i * InMat.cols + j];
 		}
 	}
-	//Âù½u©Ê´¡­È¤½¦¡
+	//é›™ç·šæ€§æ’å€¼å…¬å¼
 	for (i = 0; i < InMat.rows - 1; i++) {
 		for (j = 0; j < InMat.cols - 1; j++) {
 			int x1, x2, y1, y2, F11, F12, F21, F22;
@@ -308,7 +308,7 @@ Mat nearest_neighbor(Mat InMat, double Mag) {
 						dis[1] = INFINITY;
 						dis[3] = INFINITY;
 					}
-					//§ä¥Xªşªñ³Ìµu¶ZÂ÷ÂIªº¦Ç¶¥­È
+					//æ‰¾å‡ºé™„è¿‘æœ€çŸ­è·é›¢é»çš„ç°éšå€¼
 					if (dis[0] <= dis[1] && dis[0] <= dis[2] && dis[0] <= dis[3]) {
 						tmp.data[m * tmp.cols + n] = tmp.data[x[0] * tmp.cols + x[1]];
 					}
@@ -336,7 +336,7 @@ Mat bicubic(Mat InMat, double Mag) {
 	time_start = clock();
 	int xx[4], yy[4];
 	double x, y, u, v;
-	//Bicubic¤½¦¡
+	//Bicubicå…¬å¼
 	for (i = 0; i < InMat.rows * Mag; i++) {
 		for (j = 0; j < InMat.cols * Mag; j++) {
 			x = i / Mag;
@@ -369,7 +369,7 @@ Mat bicubic(Mat InMat, double Mag) {
 Mat shrinking(Mat InMat) {
 	Mat tmp(InMat.rows / 2, InMat.cols / 2, CV_8UC1);
 	int m, n;
-	//ÁY¤p
+	//ç¸®å°
 	for (m = 0; m < InMat.rows; m += 2) {
 		for (n = 0; n < InMat.cols; n += 2) {
 			tmp.data[m / 2 * tmp.cols + n / 2] = InMat.data[m * InMat.cols + n] / 4 +
@@ -382,7 +382,7 @@ Mat shrinking(Mat InMat) {
 	return tmp;
 }
 int plotandcal(Mat InMat, int mazecnt[20][20]) {
-	//Ã¸»s¸ô½u¹Ï
+	//ç¹ªè£½è·¯ç·šåœ–
 	int tmp = 0;
 	int i, j;
 	Mat stepmap(20, 20, CV_8UC1);
@@ -435,14 +435,14 @@ int hw2_1_1and2() {
 		}
 	}
 	Mat OutMat(10, 50, CV_8UC1);
-	//¤Á¥X²´·ú³¡¤À
+	//åˆ‡å‡ºçœ¼ç›éƒ¨åˆ†
 	for (i = 130; i < 140; i++) {
 		for (j = 125; j < 175; j++) {
 			OutMat.data[(i - 130) * OutMat.cols + j - 125] = lenaMat.data[i * lenaMat.cols + j];
 		}
 	}
 	Mat OutMat2(20, 100, CV_8UC1);
-	//©ñ¤j
+	//æ”¾å¤§
 	for (i = 130; i < 140; i++) {
 		for (j = 125; j < 175; j++) {
 			OutMat2.data[(i - 130) * 2 * OutMat2.cols + (j - 125) * 2] = OutMat.data[(i - 130) * OutMat.cols + j - 125];
@@ -451,7 +451,7 @@ int hw2_1_1and2() {
 			OutMat2.data[((i - 130) * 2 + 1) * OutMat2.cols + (j - 125) * 2 + 1] = OutMat.data[(i - 130) * OutMat.cols + j - 125];
 		}
 	}
-	//¶K¦^­ì¹Ï
+	//è²¼å›åŸåœ–
 	for (i = 125; i < 145; i++) {
 		for (j = 100; j < 200; j++) {
 			tmp.data[i * tmp.cols + j] = OutMat2.data[(i - 125) * OutMat2.cols + j - 100];
