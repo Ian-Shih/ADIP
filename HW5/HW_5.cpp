@@ -16,19 +16,19 @@ double im_squa[256][256] = { 0 }, re_squa[256][256] = { 0 };
 double im_diam[256][256] = { 0 }, re_diam[256][256] = { 0 };
 int cv_rect[256][256] = { 0 };
 void FourierTF(Mat InMat, double im_uv[][256], double re_uv[][256]) {
-	//³Å¥ß¸­Âà´«(±N2ºûÂà´«Âà¦¨2­Ó1ºûÂà´«´î¤Ö­pºâ®É¶¡)
+	//å‚…ç«‹è‘‰è½‰æ›(å°‡2ç¶­è½‰æ›è½‰æˆ2å€‹1ç¶­è½‰æ›æ¸›å°‘è¨ˆç®—æ™‚é–“)
 	int i, j, u, v;
 	double maxv = 0, minv = 999;
 	vector<vector<double>>	input(InMat.rows, vector<double>(InMat.cols)),
 							im_xv(InMat.rows, vector<double>(InMat.cols)),
 							re_xv(InMat.rows, vector<double>(InMat.cols));
-	//±NÀW°ì¹Ï²¾¦Ü¤¤¤ß
+	//å°‡é »åŸŸåœ–ç§»è‡³ä¸­å¿ƒ
 	for (i = 0; i < InMat.rows; i++) {
 		for (j = 0; j < InMat.cols; j++) {
 			input[i][j] = InMat.at<uchar>(i, j) * pow(-1, i + j);
 		}
 	}
-	//²Ä¤@¦¸¤@ºûÂà´«(±Nf(x,y)Âà¬°F(x,v))
+	//ç¬¬ä¸€æ¬¡ä¸€ç¶­è½‰æ›(å°‡f(x,y)è½‰ç‚ºF(x,v))
 	for (i = 0; i < InMat.rows; i++) {
 		for (v = 0; v < InMat.cols; v++) {
 			re_xv[i][v] = 0;
@@ -39,7 +39,7 @@ void FourierTF(Mat InMat, double im_uv[][256], double re_uv[][256]) {
 			}
 		}
 	}
-	//²Ä¤G¦¸¤@ºûÂà´«(±NF(x,v)Âà¬°F(u,v))
+	//ç¬¬äºŒæ¬¡ä¸€ç¶­è½‰æ›(å°‡F(x,v)è½‰ç‚ºF(u,v))
 	for (u = 0; u < InMat.rows; u++) {
 		for (v = 0; v < InMat.cols; v++) {
 			re_uv[u][v] = 0;
@@ -57,7 +57,7 @@ void mag(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 	int u, v;
 	double maxv = 0, minv = 999;
 	Mat tmp(OutMat.rows, OutMat.cols, CV_32F);
-	//Âk¤@¤Æ
+	//æ­¸ä¸€åŒ–
 	for (u = 0; u < OutMat.rows; u++) {
 		for (v = 0; v < OutMat.cols; v++) {
 			tmp.at<float>(u, v) = sqrt(pow(re_uv[u][v], 2) + pow(im_uv[u][v], 2));
@@ -67,7 +67,7 @@ void mag(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 		}
 	}
 	tmp /= maxv;
-	//Gamma®Õ¥¿
+	//Gammaæ ¡æ­£
 	for (u = 0; u < OutMat.rows; u++) {
 		for (v = 0; v < OutMat.cols; v++) {
 			tmp.at<float>(u, v) = pow(tmp.at<float>(u, v), 0.4);
@@ -81,14 +81,14 @@ void mag(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 	}
 }
 void IFT(double im_uv[][256], double re_uv[][256], Mat OutMat) {
-	//³Å¥ß¸­°fÂà´«(±N2ºû°fÂà´«Âà¦¨2­Ó1ºû°fÂà´«´î¤Ö­pºâ®É¶¡)
+	//å‚…ç«‹è‘‰é€†è½‰æ›(å°‡2ç¶­é€†è½‰æ›è½‰æˆ2å€‹1ç¶­é€†è½‰æ›æ¸›å°‘è¨ˆç®—æ™‚é–“)
 	int i = 0, j = 0, u = 0, v = 0;
 	vector<vector<double>>	input(OutMat.rows, vector<double>(OutMat.cols)),
 		im_uy(OutMat.rows, vector<double>(OutMat.cols)),
 		re_uy(OutMat.rows, vector<double>(OutMat.cols)),
 		im_xy(OutMat.rows, vector<double>(OutMat.cols)),
 		re_xy(OutMat.rows, vector<double>(OutMat.cols));
-	//²Ä¤@¦¸¤@ºû°fÂà´«(±NF(u,v)Âà¬°F(u,y))
+	//ç¬¬ä¸€æ¬¡ä¸€ç¶­é€†è½‰æ›(å°‡F(u,v)è½‰ç‚ºF(u,y))
 	for (u = 0; u < OutMat.rows; u++) {
 		for (j = 0; j < OutMat.cols; j++) {
 			re_uy[u][j] = 0;
@@ -101,7 +101,7 @@ void IFT(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 			}
 		}
 	}
-	//²Ä¤G¦¸¤@ºû°fÂà´«(±NF(u,y)Âà¬°f(x,y))
+	//ç¬¬äºŒæ¬¡ä¸€ç¶­é€†è½‰æ›(å°‡F(u,y)è½‰ç‚ºf(x,y))
 	for (i = 0; i < OutMat.rows; i++) {
 		for (j = 0; j < OutMat.cols; j++) {
 			re_xy[i][j] = 0;
@@ -114,7 +114,7 @@ void IFT(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 			}
 		}
 	}
-	//magnitude(¦]¬°Âà´«®É­¼¹Lpow(-1, i + j)¡A»İ­n¦A­¼¤@¦¸)
+	//magnitude(å› ç‚ºè½‰æ›æ™‚ä¹˜épow(-1, i + j)ï¼Œéœ€è¦å†ä¹˜ä¸€æ¬¡)
 	for (i = 0; i < OutMat.rows; i++) {
 		for (j = 0; j < OutMat.cols; j++) {
 			OutMat.at<uchar>(i, j) = sqrt(pow(re_xy[i][j] * pow(-1, i + j), 2) + pow(im_xy[i][j] * pow(-1, i + j), 2));
@@ -122,7 +122,7 @@ void IFT(double im_uv[][256], double re_uv[][256], Mat OutMat) {
 	}
 }
 void mse_and_psnr(Mat oriMat, Mat InMat) {
-	//µû¦ô»~®t¡A¥Îmse»Ppsnrªí¥Ü
+	//è©•ä¼°èª¤å·®ï¼Œç”¨mseèˆ‡psnrè¡¨ç¤º
 	double mse = 0;
 	double psnr = 0;
 	int i, j;
@@ -137,7 +137,7 @@ void mse_and_psnr(Mat oriMat, Mat InMat) {
 	printf("vs. org psnr: %f\n", psnr);
 }
 Mat opencv_dft(Mat InMat) {
-	//opencvªº³Å¥ß¸­Âà´«
+	//opencvçš„å‚…ç«‹è‘‰è½‰æ›
 	Mat to64F, OutMat;
 	InMat.convertTo(to64F, CV_64F);
 	dft(to64F, OutMat, DFT_COMPLEX_OUTPUT);
@@ -147,7 +147,7 @@ Mat opencv_mag(Mat InMat) {
 	Mat tmp, OutMat;
 	vector<Mat> split2chs;
 	split(InMat, split2chs);
-	magnitude(split2chs[0], split2chs[1], OutMat);//²£¥ÍÀW°ì¹Ï
+	magnitude(split2chs[0], split2chs[1], OutMat);//ç”¢ç”Ÿé »åŸŸåœ–
 	Mat q0, q1, q2, q3;
 	int u, v;
 	int cx = 256 / 2;
@@ -156,7 +156,7 @@ Mat opencv_mag(Mat InMat) {
 	q1 = Mat(OutMat, Rect(cx, 0, cx, cy));
 	q2 = Mat(OutMat, Rect(0, cy, cx, cy));
 	q3 = Mat(OutMat, Rect(cx, cy, cx, cy));
-	//±NÀW°ì¹Ï²¾¦Ü¤¤¤ß
+	//å°‡é »åŸŸåœ–ç§»è‡³ä¸­å¿ƒ
 	q0.copyTo(tmp);
 	q3.copyTo(q0);
 	tmp.copyTo(q3);
@@ -168,14 +168,14 @@ Mat opencv_mag(Mat InMat) {
 	return OutMat;
 }
 Mat opencv_idft(Mat InMat) {
-	//opencvªº³Å¥ß¸­°fÂà´«
+	//opencvçš„å‚…ç«‹è‘‰é€†è½‰æ›
 	Mat to64F, OutMat;
 	idft(InMat, to64F, DFT_REAL_OUTPUT + DFT_INVERSE + DFT_SCALE);
 	to64F.convertTo(OutMat, CV_8UC1);
 	return OutMat;
 }
 void hw2_a_and_c() {
-	//³Å¥ß¸­Âà´« by C++
+	//å‚…ç«‹è‘‰è½‰æ› by C++
 
 	int width = 256;
 	int height = 256;
@@ -233,7 +233,7 @@ void hw2_a_and_c() {
 	Mat diamondMat(height, width, CV_8UC1, diamond);
 	Mat test3(height, width, CV_8UC1);
 
-	//Åã¥Üµ²ªG¹Ï
+	//é¡¯ç¤ºçµæœåœ–
 	imshow("rectMat", rectMat);
 	FourierTF(rectMat, im_rect, re_rect);
 	mag(im_rect, re_rect, test);
@@ -291,7 +291,7 @@ void hw2_a_and_c() {
 	destroyAllWindows();
 }
 void hw2_b() {
-	//³Å¥ß¸­Âà´« by Opencv
+	//å‚…ç«‹è‘‰è½‰æ› by Opencv
 	int width = 256;
 	int height = 256;
 
@@ -346,26 +346,26 @@ void hw2_b() {
 	Mat test3(height, width, CV_8UC1);
 	Mat comp, comp1, comp2, comp3;
 
-	//³Å¥ß¸­Âà´«by OpenCV
+	//å‚…ç«‹è‘‰è½‰æ›by OpenCV
 	comp  = opencv_dft(rectMat);
 	comp1 = opencv_dft(circleMat);
 	comp2 = opencv_dft(squareMat);
 	comp3 = opencv_dft(diamondMat);
 
-	//²£¥ÍÀW°ì¹Ï
+	//ç”¢ç”Ÿé »åŸŸåœ–
 	test  = opencv_mag(comp);
 	test1 = opencv_mag(comp1);
 	test2 = opencv_mag(comp2);
 	test3 = opencv_mag(comp3);
 
-	//³Å¥ß¸­°fÂà´«by OpenCV
+	//å‚…ç«‹è‘‰é€†è½‰æ›by OpenCV
 	Mat cv1, cv2, cv3, cv4;
 	cv1 = opencv_idft(comp);
 	cv2 = opencv_idft(comp1);
 	cv3 = opencv_idft(comp2);
 	cv4 = opencv_idft(comp3);
 
-	//Åã¥Üµ²ªG¹Ï
+	//é¡¯ç¤ºçµæœåœ–
 	imshow("rect_dft_by_cv", test);
 	imwrite("Outpic/rect_dft_by_cv.png", test);
 	imshow("rect_idft_by_cv", cv1);
